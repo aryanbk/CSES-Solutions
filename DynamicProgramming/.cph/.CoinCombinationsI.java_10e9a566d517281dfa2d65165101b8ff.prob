@@ -1,0 +1,1 @@
+{"name":"Local: CoinCombinationsI","url":"c:\\aryan\\mycode\\cses\\DynamicProgramming\\CoinCombinationsI.java","tests":[{"id":1709968154880,"input":"3 9\n2 3 5","output":"8"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\aryan\\mycode\\cses\\DynamicProgramming\\CoinCombinationsI.java","group":"local","local":true}
