@@ -1,0 +1,1 @@
+{"name":"Local: ChessboardandQueens","url":"c:\\aryan\\mycode\\cses\\ChessboardandQueens.java","tests":[{"id":1709882403901,"input":"........\n........\n..*.....\n........\n........\n.....**.\n...*....\n........","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\aryan\\mycode\\cses\\ChessboardandQueens.java","group":"local","local":true}
