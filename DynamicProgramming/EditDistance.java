@@ -13,32 +13,28 @@ public class EditDistance {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        String ip = fs.next();
-        String op = fs.next();
-        int n = ip.length();
-        int m = op.length();
+        String word1 = fs.next();
+        String word2 = fs.next();
+        int n = word1.length();
+        int m = word2.length();
 
-        int[] fi = new int[26];
-        for (int i = 0; i < n; ++i)
-            ++fi[ip.charAt(i) - 'A'];
+        int[][] dp = new int[n + 1][m + 1];
 
-        int[] fo = new int[26];
-        for (int i = 0; i < m; ++i)
-            ++fo[op.charAt(i) - 'A'];
+        for (int i = 0; i <= n; ++i) {
+            for (int j = 0; j <= m; ++j) {
 
-        int[][] dp = new int[27][2];
+                if (i == 0 || j == 0)
+                    dp[i][j] = i + j;
+                else if (word1.charAt(i - 1) == word2.charAt(j - 1))
+                    dp[i][j] = dp[i - 1][j - 1];
+                else {
+                    dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1]));
+                }
 
-        for (int i = 1; i < 27; ++i) {
-            dp[i] = dp[i - 1].clone();
-            if (fi[i - 1] == fo[i - 1])
-                continue;
-            else if (fi[i - 1] > fo[i - 1])
-                dp[i][1] += fi[i - 1] - fo[i - 1];
-            else
-                dp[i][0] += fo[i - 1] - fi[i - 1];
+            }
         }
 
-        out.println(Math.max(dp[26][0], dp[26][1]));
+        out.println(dp[n][m]);
 
         out.close();
     }
