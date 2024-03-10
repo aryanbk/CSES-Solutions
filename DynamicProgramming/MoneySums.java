@@ -7,11 +7,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.SortedSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 public class MoneySums {
     static int[] coins;
-    static HashSet<Integer> ans;
+    static SortedSet<Integer> ans;
     static int[][] dp;
 
     public static void main(String[] args) {
@@ -19,14 +21,9 @@ public class MoneySums {
         PrintWriter out = new PrintWriter(System.out);
 
         int n = fs.nextInt();
-        int sumt = 0;
-        coins = new int[n];
-        for (int i = 0; i < n; ++i) {
-            coins[i] = fs.nextInt();
-            sumt += coins[i];
-        }
+        coins = fs.readArray(n);
+        ans = new TreeSet<>();
 
-        ans = new HashSet<>();
         ans.add(0);
         solve(0);
 
@@ -49,6 +46,8 @@ public class MoneySums {
         solve(i + 1);
     }
 
+    // wont work TLE
+    //
     // static void solve(int n, int sumt) {
     // if (n == 0) {
     // if (sumt == 0)
