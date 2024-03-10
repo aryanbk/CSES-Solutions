@@ -12,40 +12,81 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 public class MoneySums {
-    static int[] coins;
-    static SortedSet<Integer> ans;
-    static int[][] dp;
 
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
         int n = fs.nextInt();
-        coins = fs.readArray(n);
-        ans = new TreeSet<>();
+        int sumt = 0;
+        int[] coins = new int[n];
+        for (int i = 0; i < n; ++i) {
+            coins[i] = fs.nextInt();
+            sumt += coins[i];
+        }
 
-        ans.add(0);
-        solve(0);
+        boolean[] dp = new boolean[sumt + 1]; // reachable
+        dp[0] = true;
 
-        out.println(ans.size() - 1);
-        for (int a : ans)
-            if (a != 0)
-                out.print(a + " ");
+        for (int i = 0; i < n; ++i) {
+            for (int j = sumt; j >= coins[i]; --j) {
+                dp[j] |= dp[j - coins[i]];
+            }
+        }
+
+        int ans = 0;
+
+        for (int i = 1; i < sumt + 1; ++i)
+            if (dp[i])
+                ++ans;
+        out.println(ans);
+        for (int i = 1; i < sumt + 1; ++i)
+            if (dp[i])
+                out.print(i + " ");
 
         out.close();
     }
 
-    static void solve(int i) {
-        if (i == coins.length)
-            return;
-        HashSet<Integer> cur = new HashSet<>();
-        for (int a : ans)
-            cur.add(a + coins[i]);
-        for (int a : cur)
-            ans.add(a);
-        solve(i + 1);
-    }
+    // Second attempt
+    //
+    // wont solve TLE in 1 testcase
+    //
+    // static int[] coins;
+    // static SortedSet<Integer> ans;
+    // static int[][] dp;
 
+    // public static void main(String[] args) {
+    // FastScanner fs = new FastScanner();
+    // PrintWriter out = new PrintWriter(System.out);
+
+    // int n = fs.nextInt();
+    // coins = fs.readArray(n);
+    // ans = new TreeSet<>();
+
+    // ans.add(0);
+    // solve(0);
+
+    // out.println(ans.size() - 1);
+    // for (int a : ans)
+    // if (a != 0)
+    // out.print(a + " ");
+
+    // out.close();
+    // }
+
+    // static void solve(int i) {
+    // if (i == coins.length)
+    // return;
+    // HashSet<Integer> cur = new HashSet<>();
+    // for (int a : ans)
+    // cur.add(a + coins[i]);
+    // for (int a : cur)
+    // ans.add(a);
+    // solve(i + 1);
+    // }
+
+    // First attempt
+    //
     // wont work TLE
     //
     // static void solve(int n, int sumt) {
