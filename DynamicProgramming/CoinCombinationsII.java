@@ -17,7 +17,8 @@ public class CoinCombinationsII {
         int trgt = fs.nextInt();
         int[] coins = fs.readArray(n);
 
-        int[][] dp = new int[trgt + 1][n + 1];
+        // int[][] dp = new int[trgt + 1][n + 1];
+        long[][] dp = new long[trgt + 1][n + 1];
         Arrays.fill(dp[0], 1);
 
         for (int i = 1; i <= trgt; ++i) {
@@ -26,14 +27,12 @@ public class CoinCombinationsII {
                 if (coins[j - 1] <= i) {
                     // dp[i][j] = (dp[i][j] + dp[i - coins[j - 1]][j]) % mod;
                     dp[i][j] += dp[i - coins[j - 1]][j];
-                    while (dp[i][j] >= mod)
-                        dp[i][j] -= mod;
                 }
 
             }
         }
 
-        out.println(dp[trgt][n]);
+        out.println(dp[trgt][n] % mod);
 
         out.close();
     }
