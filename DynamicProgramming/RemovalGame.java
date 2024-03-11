@@ -9,8 +9,7 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 public class RemovalGame {
-    static Long[][] dp;
-
+    // static Long[][] dp;
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
@@ -23,23 +22,33 @@ public class RemovalGame {
             sumt += a[i];
         }
 
-        dp = new Long[n + 1][n + 1];
-        long ans = (solve(0, n - 1, a) + sumt) / 2;
+        long[][] dp = new long[n + 1][n + 1];
+        for (int i = 0; i < n; ++i) {
+            for (int j = n - 1; j >= i; --j) {
+                dp[i][j] = a[i] - dp[i + 1][j];
+                if (j - 1 >= 0)
+                    dp[i][j] = Math.max(dp[i][j], a[j] - dp[i][j - 1]);
+            }
+        }
+
+        long ans = (dp[0][n - 1] + sumt) / 2;
         out.println(ans);
 
         out.close();
     }
 
-    static long solve(int i, int j, int[] a) {
-        if (i > j)
-            return 0;
-        if (dp[i][j] != null)
-            return dp[i][j];
-        long ans = a[i] - solve(i + 1, j, a);
-        ans = Math.max(ans, a[j] - solve(i, j - 1, a));
-        dp[i][j] = ans;
-        return ans;
-    }
+    // memo - TLE
+    //
+    // static long solve(int i, int j, int[] a) {
+    // if (i > j)
+    // return 0;
+    // if (dp[i][j] != null)
+    // return dp[i][j];
+    // long ans = a[i] - solve(i + 1, j, a);
+    // ans = Math.max(ans, a[j] - solve(i, j - 1, a));
+    // dp[i][j] = ans;
+    // return ans;
+    // }
 
     static final Random random = new Random();
     static final int mod = 1_000_000_007;
