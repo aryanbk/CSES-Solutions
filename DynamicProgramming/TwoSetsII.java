@@ -9,38 +9,57 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 public class TwoSetsII {
-    static int n;
-    static int sumt;
-    static Long[][] dp;
+    // static int n;
+    // static int sumt;
+    // static long[][] dp;
 
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        n = fs.nextInt();
-        sumt = n * (n + 1) / 2;
-        dp = new Long[n + 1][sumt + 1];
+        int n = fs.nextInt();
+        int sumt = n * (n + 1) / 2;
 
-        if (sumt % 2 == 1)
+        if (sumt % 2 == 1) {
             out.println(0);
-        else
-            out.println((solve(1, 0) / 2) % mod);
+        } else {
+            long[][] dp = new long[n + 1][sumt + 1];
+            dp[0][0] = 1L;
+            for (int i = 1; i <= n; ++i) {
+                for (int sum = 0; sum <= sumt / 2; ++sum) {
+                    dp[i][sum] = dp[i - 1][sum];
+                    if (sum - i >= 0)
+                        dp[i][sum] = (dp[i][sum] + dp[i - 1][sum - i]) % (2 * mod);
+                }
+            }
+
+            out.println((dp[n][sumt / 2] / 2) % mod);
+        }
+
+        // for(int i=1; i<n)
+
+        // if (sumt % 2 == 1)
+        // out.println(0);
+        // else
+        // out.println((solve(1, 0) / 2) % mod);
 
         out.close();
     }
 
-    static long solve(int i, int cur) {
-        if (i == n + 1)
-            return cur == sumt / 2 ? 1 : 0;
+    // TLE
+    //
+    // static long solve(int i, int cur) {
+    // if (i == n + 1)
+    // return cur == sumt / 2 ? 1 : 0;
 
-        if (dp[i][cur] != null)
-            return dp[i][cur];
+    // if (dp[i][cur] != null)
+    // return dp[i][cur];
 
-        dp[i][cur] = solve(i + 1, cur);
-        dp[i][cur] = (dp[i][cur] + solve(i + 1, cur + i)) % (mod * 2);
+    // dp[i][cur] = solve(i + 1, cur);
+    // dp[i][cur] = (dp[i][cur] + solve(i + 1, cur + i)) % (mod * 2);
 
-        return dp[i][cur];
-    }
+    // return dp[i][cur];
+    // }
 
     static final Random random = new Random();
     static final int mod = 1_000_000_007;
