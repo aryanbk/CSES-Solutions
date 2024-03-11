@@ -23,7 +23,7 @@ public class TwoSetsII {
         if (sumt % 2 == 1) {
             out.println(0);
         } else {
-            long[][] dp = new long[n + 1][sumt + 1];
+            long[][] dp = new long[n + 1][sumt / 2 + 1];
             dp[0][0] = 1L;
             for (int i = 1; i <= n; ++i) {
                 for (int sum = 0; sum <= sumt / 2; ++sum) {
