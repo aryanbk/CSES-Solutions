@@ -12,7 +12,8 @@ public class ArrayDescription {
     static int[] arr;
     static int n;
     static int m;
-    static Integer[][] dp;
+    // static Integer[][] dp;
+    static int[][] dp;
 
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
@@ -22,40 +23,71 @@ public class ArrayDescription {
         m = fs.nextInt();
 
         arr = fs.readArray(n);
-        dp = new Integer[n][m + 2];
+        dp = new int[n][m + 2];
+
+        for (int i = n - 1; i >= 0; --i) {
+            for (int val = 0; val <= m; ++val) {
+                if (i == n - 1)
+                    dp[i][val] = ((val >= 1 && val <= m) && (arr[i] == 0 || arr[i] == val)) ? 1 : 0;
+                else if (val < 1 || val > m)
+                    dp[i][val] = 0;
+                else if (arr[i] != 0 && arr[i] != val)
+                    dp[i][val] = 0;
+                else {
+                    dp[i][val] = (dp[i][val] + dp[i + 1][val - 1]) % mod;
+                    dp[i][val] = (dp[i][val] + dp[i + 1][val]) % mod;
+                    dp[i][val] = (dp[i][val] + dp[i + 1][val + 1]) % mod;
+                }
+            }
+        }
 
         if (arr[0] != 0)
-            out.println(solve(0, arr[0]));
+            out.println(dp[0][arr[0]]);
         else {
             int ans = 0;
-            for (int val = 1; val <= m; ++val) {
-                ans = (ans + solve(0, val)) % mod;
-            }
+            for (int val = 1; val <= m; ++val)
+                ans = (ans + dp[0][val]) % mod;
             out.println(ans);
         }
+
+        // memoization code - Stack Over Flow
+        //
+        // if (arr[0] != 0)
+        // out.println(solve(0, arr[0]));
+        // else {
+        // int ans = 0;
+        // for (int val = 1; val <= m; ++val) {
+        // ans = (ans + solve(0, val)) % mod;
+        // }
+        // out.println(ans);
+        // }
 
         out.close();
     }
 
-    static int solve(int i, int val) {
-        if (i == n - 1)
-            return ((val >= 1 && val <= m) && (arr[i] == 0 || arr[i] == val)) ? 1 : 0;
+    // memoization code - Stack Over Flow
+    //
+    // static int solve(int i, int val) {
+    // if (i == n - 1)
+    // return ((val >= 1 && val <= m) && (arr[i] == 0 || arr[i] == val)) ? 1 : 0;
 
-        if (val < 1 || val > m)
-            return 0;
+    // if (val < 1 || val > m)
+    // return 0;
 
-        if (dp[i][val] != null)
-            return dp[i][val];
+    // if (dp[i][val] != null)
+    // return dp[i][val];
 
-        if (arr[i] != 0 && arr[i] != val)
-            return 0;
+    // if (arr[i] != 0 && arr[i] != val) {
+    // dp[i][val] = 0;
+    // return 0;
+    // }
 
-        dp[i][val] = 0;
-        dp[i][val] = (dp[i][val] + solve(i + 1, val - 1));
-        dp[i][val] = (dp[i][val] + solve(i + 1, val));
-        dp[i][val] = (dp[i][val] + solve(i + 1, val + 1));
-        return dp[i][val];
-    }
+    // dp[i][val] = 0;
+    // dp[i][val] = (dp[i][val] + solve(i + 1, val - 1));
+    // dp[i][val] = (dp[i][val] + solve(i + 1, val));
+    // dp[i][val] = (dp[i][val] + solve(i + 1, val + 1));
+    // return dp[i][val];
+    // }
 
     static final Random random = new Random();
     static final int mod = 1_000_000_007;
