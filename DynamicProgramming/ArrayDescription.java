@@ -8,94 +8,54 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class MoneySums {
+public class ArrayDescription {
+    static int[] arr;
+    static int n;
+    static int m;
+    static Integer[][] dp;
 
     public static void main(String[] args) {
         FastScanner fs = new FastScanner();
         PrintWriter out = new PrintWriter(System.out);
 
-        int n = fs.nextInt();
-        int sumt = 0;
-        int[] coins = new int[n];
-        for (int i = 0; i < n; ++i) {
-            coins[i] = fs.nextInt();
-            sumt += coins[i];
-        }
+        n = fs.nextInt();
+        m = fs.nextInt();
 
-        boolean[] dp = new boolean[sumt + 1]; // reachable
-        dp[0] = true;
+        arr = fs.readArray(n);
+        dp = new Integer[n][m + 2];
 
-        for (int i = 0; i < n; ++i) {
-            for (int j = sumt; j >= coins[i]; --j) {
-                dp[j] |= dp[j - coins[i]];
+        if (arr[0] != 0)
+            out.println(solve(0, arr[0]));
+        else {
+            int ans = 0;
+            for (int val = 1; val <= m; ++val) {
+                ans = (ans + solve(0, val)) % mod;
             }
+            out.println(ans);
         }
-
-        int ans = 0;
-
-        for (int i = 1; i < sumt + 1; ++i)
-            if (dp[i])
-                ++ans;
-        out.println(ans);
-        for (int i = 1; i < sumt + 1; ++i)
-            if (dp[i])
-                out.print(i + " ");
 
         out.close();
     }
 
-    // Second attempt
-    //
-    // wont solve TLE in 1 testcase
-    //
-    // static int[] coins;
-    // static SortedSet<Integer> ans;
-    // static int[][] dp;
+    static int solve(int i, int val) {
+        if (i == n - 1)
+            return ((val >= 1 && val <= m) && (arr[i] == 0 || arr[i] == val)) ? 1 : 0;
 
-    // public static void main(String[] args) {
-    // FastScanner fs = new FastScanner();
-    // PrintWriter out = new PrintWriter(System.out);
+        if (val < 1 || val > m)
+            return 0;
 
-    // int n = fs.nextInt();
-    // coins = fs.readArray(n);
-    // ans = new TreeSet<>();
+        if (dp[i][val] != null)
+            return dp[i][val];
 
-    // ans.add(0);
-    // solve(0);
+        if (arr[i] != 0 && arr[i] != val)
+            return 0;
 
-    // out.println(ans.size() - 1);
-    // for (int a : ans)
-    // if (a != 0)
-    // out.print(a + " ");
-
-    // out.close();
-    // }
-
-    // static void solve(int i) {
-    // if (i == coins.length)
-    // return;
-    // HashSet<Integer> cur = new HashSet<>();
-    // for (int a : ans)
-    // cur.add(a + coins[i]);
-    // for (int a : cur)
-    // ans.add(a);
-    // solve(i + 1);
-    // }
-
-    // First attempt
-    //
-    // wont work TLE
-    //
-    // static void solve(int n, int sumt) {
-    // if (n == 0) {
-    // if (sumt == 0)
-    // return;
-    // ans.add(sumt);
-    // return;
-    // }
-    // solve(n - 1, sumt + coins[n - 1]);
-    // solve(n - 1, sumt);
-    // }
+        dp[i][val] = 0;
+        dp[i][val] = (dp[i][val] + solve(i + 1, val - 1));
+        dp[i][val] = (dp[i][val] + solve(i + 1, val));
+        dp[i][val] = (dp[i][val] + solve(i + 1, val + 1));
+        return dp[i][val];
+    }
 
     static final Random random = new Random();
     static final int mod = 1_000_000_007;
