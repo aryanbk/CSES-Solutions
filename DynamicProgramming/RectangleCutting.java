@@ -29,15 +29,24 @@ public class RectangleCutting {
     static int solve(int a, int b) {
         if (a == b)
             return 0;
+        if (a == 1 || b == 1)
+            return a + b - 2;
         if (dp[a][b] != null)
             return dp[a][b];
 
         dp[a][b] = 1000000000;
-        for (int i = 1; i <= a / 2; ++i) {
+        for (int i = 1; i < a; ++i) {
             int la = Math.max(i, b);
             int lb = Math.min(i, b);
             int ra = Math.max(a - i, b);
             int rb = Math.min(a - i, b);
+            dp[a][b] = Math.min(dp[a][b], 1 + solve(la, lb) + solve(ra, rb));
+        }
+        for (int i = 1; i < b; ++i) {
+            int la = Math.max(i, a);
+            int lb = Math.min(i, a);
+            int ra = Math.max(b - i, a);
+            int rb = Math.min(b - i, a);
             dp[a][b] = Math.min(dp[a][b], 1 + solve(la, lb) + solve(ra, rb));
         }
         return dp[a][b];
