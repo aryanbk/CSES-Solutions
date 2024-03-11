@@ -21,7 +21,10 @@ public class TwoSetsII {
         sumt = n * (n + 1) / 2;
         dp = new Long[n + 1][sumt + 1];
 
-        out.println((solve(1, 0) / 2) % mod);
+        if (sumt % 2 == 1)
+            out.println(0);
+        else
+            out.println((solve(1, 0) / 2) % mod);
 
         out.close();
     }
