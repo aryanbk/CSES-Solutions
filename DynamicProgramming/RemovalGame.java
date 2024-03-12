@@ -23,9 +23,12 @@ public class RemovalGame {
         }
 
         long[][] dp = new long[n + 1][n + 1];
-        for (int i = 0; i < n; ++i) {
-            for (int j = n - 1; j >= i; --j) {
-                dp[i][j] = a[i] - dp[i + 1][j];
+
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i; j < n; ++j) {
+                dp[i][j] = -1000000000;
+                if (i + 1 <= n)
+                    dp[i][j] = Math.max(dp[i][j], a[i] - dp[i + 1][j]);
                 if (j - 1 >= 0)
                     dp[i][j] = Math.max(dp[i][j], a[j] - dp[i][j - 1]);
             }
