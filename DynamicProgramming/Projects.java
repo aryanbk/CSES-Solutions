@@ -14,34 +14,24 @@ public class Projects {
         PrintWriter out = new PrintWriter(System.out);
 
         int n = fs.nextInt();
-        int[] start = new int[n];
-        int[] end = new int[n];
-        int[] profit = new int[n];
+        int[][] time = new int[n][3];
+        for (int i = 0; i < n; ++i)
+            time[i] = fs.readArray(3);
 
-        for (int i = 0; i < n; ++i) {
-            start[i] = fs.nextInt();
-            end[i] = fs.nextInt();
-            profit[i] = fs.nextInt();
-        }
-
-        out.println(jobScheduling(start, end, profit));
+        out.println(jobScheduling(time));
 
         out.close();
     }
 
-    public static int jobScheduling(int[] start, int[] end, int[] profit) {
-        int n = start.length;
-        int[][] time = new int[n][3]; // accumulate all 3
-        for (int i = 0; i < n; ++i) {
-            time[i][0] = start[i];
-            time[i][1] = end[i];
-            time[i][2] = profit[i];
-        }
+    public static int jobScheduling(int[][] time) {
+        int n = time.length;
 
         Arrays.sort(time, (a, b) -> {
             return a[1] == b[1] ? b[0] - a[0] : a[1] - b[1];
         }); // sort based on end time
 
+        int[] end = new int[n];
+        int[] profit = new int[n];
         for (int i = 0; i < n; ++i) {
             end[i] = time[i][1];
             profit[i] = time[i][2];
