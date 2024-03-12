@@ -26,7 +26,7 @@ public class RemovalGame {
 
         for (int i = n - 1; i >= 0; --i) {
             for (int j = i; j < n; ++j) {
-                dp[i][j] = -1000000000;
+                dp[i][j] = Long.MIN_VALUE; // IMP
                 if (i + 1 <= n)
                     dp[i][j] = Math.max(dp[i][j], a[i] - dp[i + 1][j]);
                 if (j - 1 >= 0)
