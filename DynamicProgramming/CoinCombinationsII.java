@@ -27,6 +27,8 @@ public class CoinCombinationsII {
                 if (coins[j - 1] <= i) {
                     // dp[i][j] = (dp[i][j] + dp[i - coins[j - 1]][j]) % mod;
                     dp[i][j] += dp[i - coins[j - 1]][j];
+                    if (dp[i][j] >= mod)
+                        dp[i][j] -= mod;
                 }
 
             }
